@@ -18,6 +18,54 @@ const provinceLayer = L.layerGroup().addTo(map);
 let activeProvince = "";
 let provinceCache = null;
 window.addEventListener("resize", () => map.invalidateSize());
+
+const sheet = document.getElementById("sheet");
+const grip = document.getElementById("sheet-grip");
+let sheetDrag = null;
+let sheetCollapsed = false;
+
+function sheetOffset() {
+  return sheetCollapsed ? Math.max(0, sheet.offsetHeight - 36) : 0;
+}
+
+function moveSheet(y) {
+  const limit = Math.max(0, sheet.offsetHeight - 36);
+  const next = Math.max(0, Math.min(limit, y));
+  sheet.style.transform = `translateY(${next}px)`;
+  return next;
+}
+
+function finishSheet(y) {
+  sheet.classList.remove("dragging");
+  sheet.style.transform = "";
+  sheetCollapsed = y > sheet.offsetHeight * 0.22;
+  sheet.classList.toggle("collapsed", sheetCollapsed);
+  setTimeout(() => map.invalidateSize(), 280);
+}
+
+if (grip && window.matchMedia("(max-width: 719px)").matches) {
+  grip.addEventListener("pointerdown", (event) => {
+    if (event.button != null && event.button !== 0) return;
+    sheetDrag = { y: event.clientY, base: sheetOffset() };
+    sheet.classList.add("dragging");
+    grip.setPointerCapture(event.pointerId);
+  });
+  grip.addEventListener("pointermove", (event) => {
+    if (!sheetDrag) return;
+    moveSheet(sheetDrag.base + (event.clientY - sheetDrag.y));
+  });
+  grip.addEventListener("pointerup", (event) => {
+    if (!sheetDrag) return;
+    const y = moveSheet(sheetDrag.base + (event.clientY - sheetDrag.y));
+    sheetDrag = null;
+    finishSheet(y);
+  });
+  grip.addEventListener("pointercancel", () => {
+    if (!sheetDrag) return;
+    sheetDrag = null;
+    finishSheet(sheetOffset());
+  });
+}
 let marker = null;
 let approach = null;
 let shoreLayer = null;

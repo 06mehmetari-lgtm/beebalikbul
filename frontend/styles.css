@@ -19,6 +19,7 @@ html, body {
   background: var(--green-deep);
   font-family: "Segoe UI", system-ui, sans-serif;
   color: var(--ink);
+  overscroll-behavior: none;
 }
 
 .app {
@@ -27,6 +28,7 @@ html, body {
   height: 100dvh;
   overflow: hidden;
   background: var(--green-deep);
+  overscroll-behavior: none;
 }
 
 .stage {
@@ -251,12 +253,33 @@ html, body {
   background: var(--sheet);
   box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.28);
   padding-bottom: env(safe-area-inset-bottom);
+  transition: transform 0.28s ease;
+  overscroll-behavior: none;
+}
+
+.sheet.dragging { transition: none; }
+
+.sheet.collapsed {
+  transform: translateY(calc(100% - 36px));
+}
+
+.sheet-grip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+  padding: 12px 0 8px;
+  border: 0;
+  background: transparent;
+  touch-action: none;
+  cursor: grab;
 }
 
 .handle {
   width: 42px;
   height: 4px;
-  margin: 10px auto 4px;
   border-radius: 99px;
   background: #cfc6b4;
 }
@@ -266,6 +289,7 @@ html, body {
   min-height: 0;
   overflow: auto;
   padding: 6px 16px 18px;
+  overscroll-behavior: none;
 }
 
 .idle, .status {
@@ -907,7 +931,9 @@ html, body {
     border-left: 1px solid #d9d0be;
   }
 
-  .handle { display: none; }
+  .sheet-grip, .handle { display: none; }
+
+  .sheet.collapsed { transform: none; }
 
   .sheet-body { padding: 18px 18px 28px; }
 
