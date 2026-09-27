@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10241c">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Kontrolbee</title>
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="app needs-choice">
+    <div class="stage">
+      <header class="top">
+        <div>
+          <p class="brand">Kontrolbee</p>
+          <p class="hint">Haritadan bir suya dokun</p>
+          <p class="gate-note">Önce balıkçılığı seç. Seçilince bu kutu yukarı çıkar.</p>
+        </div>
+        <div class="choices">
+          <label class="province needed" id="fishery-label">
+            Balıkçılık
+            <select id="fishery" required>
+              <option value="">Seç</option>
+              <option value="shore">Kıyı</option>
+              <option value="open">Açık</option>
+            </select>
+          </label>
+          <label class="province">
+            İl
+            <select id="province">
+              <option value="">Serbest gezin</option>
+            </select>
+          </label>
+        </div>
+      </header>
+      <div id="map"></div>
+    </div>
+    <section id="sheet" class="sheet" aria-live="polite">
+      <div class="handle"></div>
+      <div id="sheet-body" class="sheet-body"></div>
+    </section>
+    <div id="fish-modal" class="modal" hidden>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="fish-modal-title">
+        <button id="fish-modal-close" class="modal-close" type="button">Kapat</button>
+        <div id="fish-modal-body"></div>
+      </div>
+    </div>
+    <div id="wait" class="wait" hidden>
+      <div class="wait-card" role="status">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="wait-title">Çalışıyor</p>
+        <p id="wait-text">Bekle.</p>
+        <p id="wait-time">0 saniye</p>
+      </div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
